@@ -1,0 +1,24 @@
+__pycache__
+.env
+.history
+.hypothesis/
+build/
+reports/
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+front_end/node_modules
+front_end/.pnp
+front_end/.pnp.js
+
+# testing
+front_end/coverage
+
+# production
+front_end/build
+
+# misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
