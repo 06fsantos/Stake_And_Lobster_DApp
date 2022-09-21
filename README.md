@@ -5,8 +5,8 @@ Stake and Lobster is a DeFi staking DApp built using Python and Typescript that 
 The front-end is built using react and the Brownie framework is used to build, deploy and test the Solidity contracts.
 
 ## Next Steps
-- Update ERC20 token naming to match DApp 
+- Complete unstaking portion of page
 - Restructure as a Django project to allow platform growth
 - Build dashboard for price monitoring using Chainlink Price Feeds
-- Integrate staking with established platforms (maybe AAVE and Kraken)
+- Integrate staking with established platforms (maybe AAVE and Compound)
     - Build tool for switching between established platforms to maximise returns 

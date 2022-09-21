@@ -60,7 +60,7 @@ contract TokenFarm is Ownable {
         require(balance > 0, "Staked balance must be greater than 0");
         require(
             _amount <= balance,
-            "Cannot withdraw more than they've staked."
+            "Cannot withdraw more than the value staked."
         );
         stakingBalance[_token][msg.sender] =
             stakingBalance[_token][msg.sender] -

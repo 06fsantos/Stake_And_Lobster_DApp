@@ -19,8 +19,7 @@ export const useStakeTokens = (tokenAddress: string) => {
     // approve
     // stake
     const {send: approveERC20Send, state: approveAndStakeERC20State} = 
-        useContractFunction(erc20Contract, "approve", 
-            {transactionName: "Approve ERC20 transfer"})
+        useContractFunction(erc20Contract, "approve", {transactionName: "Approve ERC20 transfer"})
 
     const approveAndStake = (amount: string) => {
         setAmountToStake(amount)
@@ -28,8 +27,7 @@ export const useStakeTokens = (tokenAddress: string) => {
     }
 
     const {send: stakeSend, state: stakeState} = 
-        useContractFunction(tokenFarmContract, "stakeTokens", 
-            {transactionName: "Stake ERC20 token"})
+        useContractFunction(tokenFarmContract, "stakeTokens", {transactionName: "Stake ERC20 token"})
 
     // const [state, setState] = useState(approveERC20State)
     const [amountToStake, setAmountToStake] = useState("0")
