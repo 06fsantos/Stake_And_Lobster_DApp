@@ -4,13 +4,13 @@ import { Button, Input, CircularProgress, Snackbar, Alert } from '@mui/material'
 import { useEthers, useTokenBalance, useNotifications } from "@usedapp/core"
 import { formatUnits } from "@ethersproject/units"
 import {Token} from "../main"
-import {useStakeTokens} from "../../hooks"
+import {useFarmTokens} from "../../hooks"
 
 export interface StakeFormProps{
     token: Token
 } 
 
-export const StakeForm = ({token}: StakeFormProps) => {
+export const WithdrawForm = ({token}: StakeFormProps) => {
     const {address: tokenAddress, name} = token
     const {account} =  useEthers()
     const tokenBalance = useTokenBalance(tokenAddress, account)
@@ -23,39 +23,28 @@ export const StakeForm = ({token}: StakeFormProps) => {
         setAmount(newAmount)
     }
 
-    const {approveAndStake, state: approveAndStakeERC20State} = useStakeTokens(tokenAddress)
-    const handleStakeSubmit = () => {
+    const {withdrawStake, withdrawState} = useFarmTokens(tokenAddress)
+    const handleWithdrawSubmit = () => {
         const amountAsWei  = utils.parseEther(amount.toString())
-        return approveAndStake(amountAsWei.toString())
+        return withdrawStake(amountAsWei.toString())
     }
 
-    const isMining = approveAndStakeERC20State.status === "Mining"
+    const isMining = withdrawState.status === "Mining"
 
-    const [showERC20ApprovalSuccess, setShowERC20ApprovalSuccess] = useState(false) 
-    const [showStakeTokenSuccess, setShowStakeTokenSuccess] = useState(false) 
+    const [showWithdrawTokenSuccess, setShowWithdrawTokenSuccess] = useState(false) 
 
     const handleCloseSnack = () => {
-        setShowERC20ApprovalSuccess(false)
-        setShowStakeTokenSuccess(false)
+        setShowWithdrawTokenSuccess(false)
     }
 
     useEffect(() => {
         if (notifications.filter(
             (notification) => 
                 notification.type === "transactionSucceed" 
-                && notification.transactionName === "Approve ERC20 transfer").length > 0) {
-                    setShowERC20ApprovalSuccess(true)
-                    setShowStakeTokenSuccess(false)
-                }
-        
-        if (notifications.filter(
-            (notification) => 
-                notification.type === "transactionSucceed" 
                 && notification.transactionName === "Stake ERC20 token").length > 0) {
-                    setShowERC20ApprovalSuccess(false)
-                    setShowStakeTokenSuccess(true)
+                    setShowWithdrawTokenSuccess(true)
                 }
-    }, [notifications, showERC20ApprovalSuccess, showStakeTokenSuccess]) 
+    }, [notifications, showWithdrawTokenSuccess]) 
 
     return (
         <>
@@ -64,28 +53,19 @@ export const StakeForm = ({token}: StakeFormProps) => {
                 <Button
                     color="primary"
                     size="large"
-                    onClick={handleStakeSubmit}
+                    onClick={handleWithdrawSubmit}
                     disabled={isMining}
                 >
                     {isMining ? <CircularProgress size={26}/> : "Stake!!"}
                 </Button>
             </div>
             <Snackbar
-                open={showERC20ApprovalSuccess}
-                autoHideDuration={5000}
-                onClose={handleCloseSnack}
-            >
-                <Alert onClose={handleCloseSnack} severity="success">
-                    ERC-20 token transfer approved! Next, approve the 2nd transaction.
-                </Alert>
-            </Snackbar>
-            <Snackbar
-                open={showStakeTokenSuccess}
+                open={showWithdrawTokenSuccess}
                 autoHideDuration={5000}
                 onClose={handleCloseSnack}
             >
                 <Alert onClose={handleCloseSnack    } severity="success">
-                    Tokens staked!
+                    Tokens withdrawn!
                 </Alert>
             </Snackbar>
         </>
